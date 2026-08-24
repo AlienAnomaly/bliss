@@ -25,6 +25,7 @@ namespace bliss
     void Renderer::Begin()
     {
         SDL_RenderClear(m_RendererHandle.get());
+        UpdateTextureQueue();
     }
 
     void Renderer::End()
