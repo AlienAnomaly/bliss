@@ -31,4 +31,9 @@ namespace bliss
     {
         return m_LevelConfigPath;
     }
+
+    const std::vector<int>& LevelClass::GetWorldData() const
+    {
+        return m_WorldData;
+    }
 }

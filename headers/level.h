@@ -33,5 +33,6 @@ namespace bliss
     public:
         [[nodiscard]] const std::string& GetLevelName() const;
         [[nodiscard]] const std::string& GetLevelConfigPath() const;
+        [[nodiscard]] const std::vector<int>& GetWorldData() const;
     };
 }

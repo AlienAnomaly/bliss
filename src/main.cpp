@@ -12,6 +12,13 @@ int main()
     {
         bliss::LevelClass level("Level-1", "../levels/level-1.json");
 
+        auto& world = level.GetWorldData();
+
+        for (const auto& i : world)
+        {
+            std::cout << i << std::endl;
+        }
+
         const bliss::WindowClass window("Game Window", 800, 600);
         bliss::RendererClass renderer(window);
 
