@@ -1,15 +1,17 @@
-#include "window.hpp"
+//
+// Created by Alien on 03/09/2026.
+//
 
-#include <stdexcept>
+#include "window.h"
 
 namespace bliss
 {
-    Window::Window(const std::string& p_Title, int p_Width, int p_Height)
+    WindowClass::WindowClass(const std::string& p_Title, int p_Width, int p_Height)
     {
         if (!SDL_Init(SDL_INIT_VIDEO))
-            throw std::runtime_error("Failed to initialize SDL. Error: " + std::string(SDL_GetError()));
+            throw std::runtime_error("Could not initialize SDL. Error: " + std::string(SDL_GetError()));
 
-        m_Window = std::unique_ptr<SDL_Window, WindowDeleter>(
+        m_WindowHandle = std::unique_ptr<SDL_Window, WindowDeleter>(
             SDL_CreateWindow(
                 p_Title.c_str(),
                 p_Width,
@@ -18,17 +20,17 @@ namespace bliss
             )
         );
 
-        if (!m_Window)
-            throw std::runtime_error("Failed to initialize SDL window. Error: " + std::string(SDL_GetError()));
+        if (!m_WindowHandle)
+            throw std::runtime_error("Could not create window. Error: " + std::string(SDL_GetError()));
     }
 
-    Window::~Window()
+    WindowClass::~WindowClass()
     {
         SDL_Quit();
     }
 
-    SDL_Window& Window::GetWindow() const
+    SDL_Window& WindowClass::GetWindowHandle() const
     {
-        return *m_Window;
+        return *m_WindowHandle;
     }
-}
+} // bliss

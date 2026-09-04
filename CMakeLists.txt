@@ -1,13 +1,19 @@
-cmake_minimum_required(VERSION 3.25)
-
+cmake_minimum_required(VERSION 4.3)
 project(bliss)
 
-include_directories(headers)
+include_directories(C:/w64devkit/include headers external/include)
 
-add_executable(bliss
-    src/main.cpp
-    src/window.cpp
-    src/renderer.cpp
-    src/game.cpp)
+set(CMAKE_CXX_STANDARD 20)
 
-target_link_libraries(bliss PRIVATE SDL3 SDL3_image m)
+add_executable(bliss src/main.cpp
+        src/window.cpp
+        headers/window.h
+        src/renderer.cpp
+        headers/renderer.h
+        src/game.cpp
+        headers/game.h
+        headers/level.h
+        src/level.cpp)
+
+target_link_libraries(bliss PRIVATE SDL3 SDL3_image)
+target_link_directories(bliss PRIVATE C:/w64devkit/lib)

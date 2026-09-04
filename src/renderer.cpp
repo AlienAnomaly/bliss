@@ -1,65 +1,41 @@
-#include "renderer.hpp"
+//
+// Created by Alien on 03/09/2026.
+//
 
-#include <stdexcept>
-
-#include <SDL3_image/SDL_image.h>
+#include "renderer.h"
 
 namespace bliss
 {
-    Renderer::Renderer(SDL_Window& p_WindowClass)
+    RendererClass::RendererClass(const WindowClass& p_WindowClassHandle)
     {
         m_RendererHandle = std::unique_ptr<SDL_Renderer, RendererDeleter>(
             SDL_CreateRenderer(
-                &p_WindowClass,
+                &p_WindowClassHandle.GetWindowHandle(),
                 nullptr
             )
         );
 
-        if(!m_RendererHandle)
-        {
-            throw std::runtime_error("Failed to create renderer. Error: " + 
-                std::string(SDL_GetError()));
-        }
+        if (!m_RendererHandle)
+            throw std::runtime_error("Failed to create renderer. Error: " + std::string(SDL_GetError()));
     }
 
-    void Renderer::Begin()
-    {
-        SDL_RenderClear(m_RendererHandle.get());
-        UpdateTextureQueue();
-    }
-
-    void Renderer::End()
-    {
-        for (const auto& texture : m_MainTextureContainer)  
-        {
-            SDL_RenderTexture(m_RendererHandle.get(), texture.get(), NULL, NULL);
-        }
-    }
-
-    SDL_Renderer& Renderer::GetRendererHandle() const
+    SDL_Renderer& RendererClass::GetRendererHandle() const
     {
         return *m_RendererHandle;
     }
 
-    SDL_Texture& Renderer::QueueTexture(const std::string& p_AssetPath)
+    void RendererClass::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a) const
     {
-        std::shared_ptr<SDL_Texture> texture(
-            IMG_LoadTexture(m_RendererHandle.get(), p_AssetPath.c_str()),
-            SDL_DestroyTexture
-        );
-
-        m_TempTextureContainer.push_back(texture);
-
-        return *texture;
+        SDL_SetRenderDrawColor(m_RendererHandle.get(), r, g, b, a);
     }
 
-    void Renderer::UpdateTextureQueue()
+    void RendererClass::Begin()
     {
-        for (const auto& texture : m_TempTextureContainer)
-        {
-            m_MainTextureContainer.push_back(texture);
-        }
-
-        m_TempTextureContainer.clear();
+        SDL_RenderClear(m_RendererHandle.get());
     }
-}
+
+    void RendererClass::End()
+    {
+        SDL_RenderPresent(m_RendererHandle.get());
+    }
+} // bliss
