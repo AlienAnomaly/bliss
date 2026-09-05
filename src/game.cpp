@@ -68,17 +68,13 @@ namespace bliss
                 const auto delayTimeMs = static_cast<double>(desiredFrameTime - frameTime) * 1000.0;
 
                 if (delayTimeMs > 0.0)
-                {
                     SDL_Delay(static_cast<Uint32>(delayTimeMs));
-                }
 
                 frameTime = desiredFrameTime;
             }
 
             if (frameTime > maxDeltaTime)
-            {
                 frameTime = maxDeltaTime;
-            }
 
             m_DeltaTime = frameTime;
             lastCounter = SDL_GetPerformanceCounter();
