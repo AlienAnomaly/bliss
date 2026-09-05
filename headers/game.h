@@ -17,17 +17,21 @@ namespace bliss
         ~GameClass() = default;
 
     private:
-        bool m_IsRunning {true};
+    // members
         const WindowClass& m_WindowClassHandle;
         RendererClass& m_RendererClassHandle;
 
-    private:
+        bool m_IsRunning {true};
+        double m_DeltaTime {0.0};
+
+    // functions:
         void HandleEvents();
         void Update();
         void Draw();
 
     public:
         void Run();
+        [[nodiscard]] const double& GetDeltaTime() const;
     };
 } // bliss
 
